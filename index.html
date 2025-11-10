@@ -17,12 +17,11 @@
                 <a href="#home">Legend</a>
             </div>
             <div class="nav-menu" id="nav-menu">
-                <a href="#home" class="nav-link">首页</a>
-                <a href="#about" class="nav-link">关于我</a>
-                <a href="#portfolio" class="nav-link">作品集</a>
-                <a href="#projects" class="nav-link">项目</a>
-                <a href="#thoughts" class="nav-link">碎碎念</a>
-                <a href="#footer" class="nav-link">联系</a>
+                <a href="#home" class="nav-link"><span data-i18n="nav.home">首页</span></a>
+                <a href="#about" class="nav-link"><span data-i18n="nav.about">关于我</span></a>
+                <a href="#portfolio" class="nav-link"><span data-i18n="nav.portfolio">作品集</span></a>
+                <a href="#projects" class="nav-link"><span data-i18n="nav.projects">项目</span></a>
+                <a href="#thoughts" class="nav-link"><span data-i18n="nav.thoughts">碎碎念</span></a>
             </div>
             <div class="nav-toggle" id="nav-toggle">
                 <span class="bar"></span>
@@ -32,6 +31,10 @@
             <button class="theme-toggle" id="theme-toggle">
                 <i class="fas fa-moon"></i>
             </button>
+            <div class="language-toggle" id="language-toggle" aria-label="切换语言" data-i18n-attr="aria-label:nav.languageAria">
+                <button class="lang-btn" data-lang="zh">中</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
         </div>
     </nav>
 
@@ -46,11 +49,11 @@
                 </div>
                 <h1 class="hero-title">Xingping Chen</h1>
                 <h2 class="hero-subtitle">Legend</h2>
-                <p class="hero-description">中山大学计算机学院学生 | 信息与计算数学专业</p>
-                <p class="hero-tagline">探索具身智能的无限可能</p>
+                <p class="hero-description" data-i18n="hero.description">中山大学计算机学院学生 | 信息与计算数学专业</p>
+                <p class="hero-tagline" data-i18n="hero.tagline">探索具身智能的无限可能</p>
                 <div class="hero-buttons">
-                    <a href="#footer" class="btn btn-primary">联系我</a>
-                    <a href="#about" class="btn btn-secondary">了解更多</a>
+                    <a href="#footer" class="btn btn-primary" data-i18n="hero.contactBtn">联系我</a>
+                    <a href="#about" class="btn btn-secondary" data-i18n="hero.moreBtn">了解更多</a>
                 </div>
                 <div class="hero-social">
                     <a href="mailto:chenxp68@mail2.sysu.edu.cn" class="social-link">
@@ -67,39 +70,39 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <h2 class="section-title">关于我</h2>
+            <h2 class="section-title" data-i18n="about.title">关于我</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <h3>个人简介</h3>
-                    <p>现为中山大学计算机学院信息与计算数学专业的学生。</p>
-                    <p>对前沿领域的研究充满热情，特别是在具身智能、量子计算、CV和大语言模型等前沿方向。</p>
-                    <p>研究兴趣集中在赋予机器人更强大的感知和交互能力，打造统一视觉-语言-动作的模型。</p>
-                    <p>想要打造出机器人的眼睛和大脑，实现更智能、更自然的交互。</p>
+                    <h3 data-i18n="about.subtitle">个人简介</h3>
+                    <p data-i18n="about.p1">现为中山大学计算机学院信息与计算数学专业的学生。</p>
+                    <p data-i18n="about.p2">对前沿领域的研究充满热情，特别是在具身智能、量子计算、CV和大语言模型等前沿方向。</p>
+                    <p data-i18n="about.p3">研究兴趣集中在赋予机器人更强大的感知和交互能力，打造统一视觉-语言-动作的模型。</p>
+                    <p data-i18n="about.p4">想要打造出机器人的眼睛和大脑，实现更智能、更自然的交互。</p>
                     
                     <div class="skills-inline">
-                        <h4>Tag</h4>
+                        <h4 data-i18n="about.tagLabel">Tag</h4>
                         <div class="skill-tags">
                             <span class="skill-tag">Python</span>
                             <span class="skill-tag">C++</span>
                             <span class="skill-tag">PyTorch</span>
-                            <span class="skill-tag">Computer Vision</span>
-                            <span class="skill-tag">Machine Learning</span>
-                            <span class="skill-tag">Quantum Computing</span>
-                            <span class="skill-tag">Embodied AI</span>
+                            <span class="skill-tag" data-i18n="skills.cv">Computer Vision</span>
+                            <span class="skill-tag" data-i18n="skills.ml">Machine Learning</span>
+                            <span class="skill-tag" data-i18n="skills.qc">Quantum Computing</span>
+                            <span class="skill-tag" data-i18n="skills.eai">Embodied AI</span>
                         </div>
                     </div>
                     
                     <div class="education-info">
-                        <h4>教育背景</h4>
+                        <h4 data-i18n="about.education">教育背景</h4>
                         <div class="education-item">
                             <i class="fas fa-university"></i>
                             <div class="education-content">
-                                <strong>中山大学</strong>
-                                <p>计算机学院 · 信息与计算数学专业</p>
+                                <strong data-i18n="about.schoolName">中山大学</strong>
+                                <p data-i18n="about.schoolInfo">计算机学院 · 信息与计算数学专业</p>
                             </div>
                             <div class="education-years">
                                 <span class="years">2022-2026</span>
-                                <span class="degree">本科生</span>
+                                <span class="degree" data-i18n="about.degree">本科生</span>
                             </div>
                         </div>
                     </div>
@@ -111,17 +114,17 @@
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio">
         <div class="container">
-            <h2 class="section-title">作品集</h2>
+            <h2 class="section-title" data-i18n="portfolio.title">作品集</h2>
             <div class="portfolio-content">
                 <div class="portfolio-category">
-                    <h3>学术论文</h3>
+                    <h3 data-i18n="portfolio.papers">学术论文</h3>
                     <div class="portfolio-items">
                         <div class="portfolio-item">
                             <i class="fas fa-file-alt"></i>
                             <div class="portfolio-info">
                                 <h4><a href="#" target="_blank" class="portfolio-title-link">test</a></h4>
-                                <p>发表于CCF-SB的TEST会议</p>
-                                <span class="portfolio-date">2025年</span>
+                                <p data-i18n="portfolio.paper1.desc">发表于CCF-SB的TEST会议</p>
+                                <span class="portfolio-date" data-i18n="common.year2025">2025年</span>
                             </div>
                         </div>
                         <!-- <div class="portfolio-item">
@@ -135,14 +138,14 @@
                     </div>
                 </div>
                 <div class="portfolio-category">
-                    <h3>技术分享</h3>
+                    <h3 data-i18n="portfolio.techSharing">技术分享</h3>
                     <div class="portfolio-items">
                         <div class="portfolio-item">
                             <i class="fas fa-presentation"></i>
                             <div class="portfolio-info">
                                 <h4><a href="#" target="_blank" class="portfolio-title-link">test</a></h4>
-                                <p>技术分享会演讲</p>
-                                <span class="portfolio-date">2025年</span>
+                                <p data-i18n="portfolio.talk1.desc">技术分享会演讲</p>
+                                <span class="portfolio-date" data-i18n="common.year2025">2025年</span>
                             </div>
                         </div>
                     </div>
@@ -154,7 +157,7 @@
     <!-- Projects Section -->
     <section id="projects" class="projects">
         <div class="container">
-            <h2 class="section-title">项目展示</h2>
+            <h2 class="section-title" data-i18n="projects.title">项目展示</h2>
             <div class="projects-grid">
                 <div class="project-card">
                     <div class="project-image">
@@ -163,12 +166,11 @@
                         </div>
                     </div>
                     <div class="project-content">
-                        <h3>基于VR手柄的机器人遥操作系统</h3>
-                        <p>开发一个基于VR手柄的机器人遥操作系统，实现用户通过VR手柄控制机器人进行操作，进而辅助采集数据。</p>
+                        <h3 data-i18n="projects.vr.title">基于VR手柄的机器人遥操作系统</h3>
+                        <p data-i18n="projects.vr.desc">开发一个基于VR手柄的机器人遥操作系统，实现用户通过VR手柄控制机器人进行操作，进而辅助采集数据。</p>
                         <div class="project-tech">
                             <span class="tech-tag">Python</span>
-                            <span class="tech-tag">PyTorch</span>
-                            <span class="tech-tag">Computer Vision</span>
+                            <span class="tech-tag" data-i18n="skills.unity">Unity（C#）</span>
                         </div>
                         <div class="project-links">
                             <a href="#" class="btn btn-primary">GitHub</a>
@@ -220,40 +222,40 @@
     <!-- Thoughts Section -->
     <section id="thoughts" class="thoughts">
         <div class="container">
-            <h2 class="section-title">碎碎念</h2>
+            <h2 class="section-title" data-i18n="thoughts.title">碎碎念</h2>
             <div class="thoughts-grid">
                 <div class="thought-card">
                     <div class="thought-header">
                         <i class="fas fa-robot"></i>
-                        <h3>关于具身智能(VLA)</h3>
-                        <span class="thought-date">2024年10月</span>
+                        <h3><a href="post.html?p=vla" class="thought-title-link" data-i18n="thoughts.vla.title">关于具身智能(VLA)</a></h3>
+                        <span class="thought-date" data-i18n="thoughts.vla.date">2024年10月</span>
                     </div>
                     <div class="thought-content">
-                        <p>在我整个大学阶段，人工智能领域经历了关键的技术跃迁。从GPT-3的发布到大模型的广泛落地，我见证了AI从理解到推理的演进过程。</p>
-                        <p>然而，当前技术仍存在关键短板：机器人尚未具备人类式的多模态环境感知与物理交互能力。真正的具身智能需要融合视觉信息与人类指令，做出精准且可泛化的物理动作(Vision-Language-Action)。</p>
-                        <p>我渴望为机器人构建更强大的"眼睛-大脑"，使其能够真正感知并理解物理环境，实现与世界的深层、有效互动。</p>
+                        <p data-i18n="thoughts.vla.p1">在我整个大学阶段，人工智能领域经历了关键的技术跃迁。从GPT-3的发布到大模型的广泛落地，我见证了AI从理解到推理的演进过程。</p>
+                        <p data-i18n="thoughts.vla.p2">然而，当前技术仍存在关键短板：机器人尚未具备人类式的多模态环境感知与物理交互能力。真正的具身智能需要融合视觉信息与人类指令，做出精准且可泛化的物理动作(Vision-Language-Action)。</p>
+                        <p data-i18n="thoughts.vla.p3">我渴望为机器人构建更强大的"眼睛-大脑"，使其能够真正感知并理解物理环境，实现与世界的深层、有效互动。</p>
                     </div>
                     <div class="thought-tags">
-                        <span class="tag">具身智能</span>
-                        <span class="tag">VLA</span>
-                        <span class="tag">多模态</span>
+                        <span class="tag" data-i18n="thoughts.vla.tag1">具身智能</span>
+                        <span class="tag" data-i18n="thoughts.vla.tag2">VLA</span>
+                        <span class="tag" data-i18n="thoughts.vla.tag3">多模态</span>
                     </div>
                 </div>
 
                 <div class="thought-card">
                     <div class="thought-header">
                         <i class="fas fa-brain"></i>
-                        <h3>关于LLM及其应用</h3>
-                        <span class="thought-date">2024年9月</span>
+                        <h3><a href="post.html?p=pi" class="thought-title-link" data-i18n="thoughts.llm.title">关于LLM及其应用</a></h3>
+                        <span class="thought-date" data-i18n="thoughts.llm.date">2024年9月</span>
                     </div>
                     <div class="thought-content">
-                        <p>大语言模型的发展让我们看到了通用人工智能的曙光。从最初的文本生成，到现在的推理、规划、工具使用，LLM正在成为连接人类意图与机器执行的桥梁。</p>
-                        <p>特别是在多模态融合方面，视觉-语言模型的出现为具身智能提供了重要的认知基础。如何让LLM更好地理解物理世界，并指导机器人的行为，是我关注的重点方向。</p>
+                        <p data-i18n="thoughts.llm.p1">大语言模型的发展让我们看到了通用人工智能的曙光。从最初的文本生成，到现在的推理、规划、工具使用，LLM正在成为连接人类意图与机器执行的桥梁。</p>
+                        <p data-i18n="thoughts.llm.p2">特别是在多模态融合方面，视觉-语言模型的出现为具身智能提供了重要的认知基础。如何让LLM更好地理解物理世界，并指导机器人的行为，是我关注的重点方向。</p>
                     </div>
                     <div class="thought-tags">
-                        <span class="tag">LLM</span>
-                        <span class="tag">多模态</span>
-                        <span class="tag">认知智能</span>
+                        <span class="tag" data-i18n="thoughts.llm.tag1">LLM</span>
+                        <span class="tag" data-i18n="thoughts.llm.tag2">多模态</span>
+                        <span class="tag" data-i18n="thoughts.llm.tag3">认知智能</span>
                     </div>
                 </div>
 
@@ -282,37 +284,37 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>研究兴趣</h3>
+                    <h3 data-i18n="footer.researchTitle">研究兴趣</h3>
                     <div class="research-interests">
-                        <span class="interest-tag">具身智能</span>
-                        <span class="interest-tag">量子计算</span>
-                        <span class="interest-tag">计算机视觉</span>
-                        <span class="interest-tag">大语言模型</span>
+                        <span class="interest-tag" data-i18n="footer.tag.eai">具身智能</span>
+                        <span class="interest-tag" data-i18n="footer.tag.qc">量子计算</span>
+                        <span class="interest-tag" data-i18n="footer.tag.cv">计算机视觉</span>
+                        <span class="interest-tag" data-i18n="footer.tag.llm">大语言模型</span>
                     </div>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>快速链接</h3>
+                    <h3 data-i18n="footer.quickLinks">快速链接</h3>
                     <div class="quick-links">
-                        <a href="#about">关于我</a>
-                        <a href="#projects">项目展示</a>
-                        <a href="#portfolio">作品集</a>
-                        <a href="#thoughts">碎碎念</a>
+                        <a href="#about" data-i18n="nav.about">关于我</a>
+                        <a href="#projects" data-i18n="nav.projects">项目展示</a>
+                        <a href="#portfolio" data-i18n="nav.portfolio">作品集</a>
+                        <a href="#thoughts" data-i18n="nav.thoughts">碎碎念</a>
                     </div>
                 </div>
             </div>
             
             <div class="footer-bottom">
                 <div class="contact-icons">
-                    <a href="mailto:chenxp68@mail2.sysu.edu.cn" title="邮箱">
+                    <a href="mailto:chenxp68@mail2.sysu.edu.cn" title="邮箱" data-i18n-attr="title:footer.emailTitle">
                         <i class="fas fa-envelope"></i>
                     </a>
                     <a href="https://github.com/Legend717" target="_blank" title="GitHub">
                         <i class="fab fa-github"></i>
                     </a>
                 </div>
-                <p>&copy; 2025 Legend. All rights reserved.</p>
-                <p>Built with ❤️ using HTML, CSS & JavaScript</p>
+                <p data-i18n="footer.copyright">&copy; 2025 Legend. All rights reserved.</p>
+                <p data-i18n="footer.builtWith">Built with ❤️ using HTML, CSS & JavaScript</p>
             </div>
         </div>
     </footer>

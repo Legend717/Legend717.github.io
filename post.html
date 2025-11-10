@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xingping Chen (Legend) - Personal Homepage</title>
+    <meta name="description" content="Thoughts detail page - renders Markdown from blog folder">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Markdown parser via CDN (static, client-side only) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html#home">Legend</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html#home" class="nav-link"><span data-i18n="nav.home">首页</span></a>
+                <a href="index.html#about" class="nav-link"><span data-i18n="nav.about">关于我</span></a>
+                <a href="index.html#portfolio" class="nav-link"><span data-i18n="nav.portfolio">作品集</span></a>
+                <a href="index.html#projects" class="nav-link"><span data-i18n="nav.projects">项目</span></a>
+                <a href="index.html#thoughts" class="nav-link"><span data-i18n="nav.thoughts">碎碎念</span></a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="language-toggle" id="language-toggle" aria-label="切换语言" data-i18n-attr="aria-label:nav.languageAria">
+                <button class="lang-btn" data-lang="zh">中</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Post Detail -->
+    <section id="post" class="post">
+        <div class="container">
+            <div class="post-actions">
+                <a href="index.html#thoughts" class="back-link" data-i18n="thoughts.detail.back"><i class="fas fa-arrow-left"></i> 返回</a>
+            </div>
+            <h1 class="post-title" id="post-title"></h1>
+            <div class="post-meta">
+                <span id="post-date"></span>
+            </div>
+            <div id="post-content" class="markdown-body" aria-live="polite" data-i18n-attr="aria-label:thoughts.detail.contentAria"></div>
+        </div>
+    </section>
+
+    <!-- Footer (condensed) -->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="contact-icons">
+                    <a href="mailto:chenxp68@mail2.sysu.edu.cn" title="邮箱" data-i18n-attr="title:footer.emailTitle">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://github.com/Legend717" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <p data-i18n="footer.copyright">&copy; 2025 Legend. All rights reserved.</p>
+                <p data-i18n="footer.builtWith">Built with ❤️ using HTML, CSS & JavaScript</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.initPostPage) {
+                window.initPostPage();
+            }
+        });
+    </script>
+</body>
+</html>
