@@ -756,6 +756,19 @@ function fetchFirstAvailableMarkdown(paths) {
     });
 }
 
+// Fetch the first available file among given candidates and return both content and the resolved path
+function fetchFirstAvailableFile(paths) {
+    return new Promise((resolve, reject) => {
+        const tryNext = (i) => {
+            if (i >= paths.length) return reject(new Error('NOT_FOUND'));
+            fetch(paths[i], { cache: 'no-store' })
+                .then(r => { if (!r.ok) throw new Error('NOT_FOUND'); return r.text().then(text => resolve({ text, path: paths[i] })); })
+                .catch(() => tryNext(i + 1));
+        };
+        tryNext(0);
+    });
+}
+
 function escapeHtml(str) {
     return str
         .replace(/&/g, '&amp;')
@@ -797,6 +810,19 @@ function parseFrontMatter(md) {
     return fm;
 }
 
+// Parse embedded JSON front-matter from generated HTML
+function parseFrontMatterFromHtml(container) {
+    try {
+        const el = container.querySelector('script[data-front-matter]');
+        if (!el) return null;
+        const jsonText = (el.textContent || '').trim();
+        if (!jsonText) return null;
+        return JSON.parse(jsonText);
+    } catch (e) {
+        return null;
+    }
+}
+
 function extractSummaryFromMarkdown(md, maxParas = 2) {
     // Strip YAML Front-Matter if present
     md = md.replace(/^---\n[\s\S]*?\n---\n?/, '').trim();
@@ -817,6 +843,18 @@ function extractSummaryFromMarkdown(md, maxParas = 2) {
     return paras.map(s => `<p>${escapeHtml(s)}</p>`).join('');
 }
 
+// Extract summary from generated HTML: remove title, blockquote and code blocks, then take first paragraphs
+function extractSummaryFromHtml(container, maxParas = 2) {
+    const temp = container.cloneNode(true);
+    temp.querySelectorAll('h1, blockquote, pre, code').forEach(el => el.remove());
+    const paras = Array.from(temp.querySelectorAll('p'))
+        .map(p => p.innerHTML.trim())
+        .filter(Boolean)
+        .slice(0, maxParas);
+    if (!paras.length) return '';
+    return paras.map(html => `<p>${html}</p>`).join('');
+}
+
 function initThoughtsAbstracts() {
     const cards = document.querySelectorAll('.thought-card');
     if (!cards.length) return;
@@ -835,35 +873,68 @@ function initThoughtsAbstracts() {
             slug = m && m[1];
         }
         if (!slug) return;
-        const candidates = [`blog/${slug}.${lang}.md`, `blog/${slug}.md`];
-        fetchFirstAvailableMarkdown(candidates)
-            .then(md => {
-                // Update title from first H1
-                const titleMatch = md.match(/^#\s+(.+)$/m);
-                if (titleMatch && link) {
-                    link.textContent = titleMatch[1].trim();
-                }
+        const candidates = [
+            `blog/${slug}.${lang}.html`,
+            `blog/${slug}.html`,
+            `blog/${slug}.${lang}.md`,
+            `blog/${slug}.md`
+        ];
+        fetchFirstAvailableFile(candidates)
+            .then(({ text, path }) => {
+                const isHtml = /\.html$/i.test(path);
+                if (isHtml) {
+                    const container = document.createElement('div');
+                    container.innerHTML = text;
 
-                // Update date from first blockquote first line
-                const dateEl = card.querySelector('.thought-date');
-                const quoteLineMatch = md.match(/^>\s*(.+)$/m);
-                if (dateEl && quoteLineMatch) {
-                    dateEl.textContent = quoteLineMatch[1].trim();
-                }
+                    // Title
+                    const firstH1 = container.querySelector('h1');
+                    if (firstH1 && link) link.textContent = firstH1.textContent.trim();
 
-                // Update tags from Front-Matter: prefer language-specific tags
-                const fm = parseFrontMatter(md);
-                let tags = null;
-                if (lang === 'zh' && Array.isArray(fm.tags_zh)) tags = fm.tags_zh;
-                else if (lang === 'en' && Array.isArray(fm.tags_en)) tags = fm.tags_en;
-                else if (Array.isArray(fm.tags)) tags = fm.tags;
-                const tagsEl = card.querySelector('.thought-tags');
-                if (tagsEl && tags && tags.length) {
-                    tagsEl.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-                }
+                    // Date
+                    const dateEl = card.querySelector('.thought-date');
+                    const firstQuote = container.querySelector('blockquote');
+                    if (dateEl && firstQuote) dateEl.textContent = firstQuote.textContent.trim();
 
-                const summaryHtml = extractSummaryFromMarkdown(md, 1);
-                if (summaryHtml) contentEl.innerHTML = summaryHtml;
+                    // Tags via front-matter JSON if available
+                    const fm = parseFrontMatterFromHtml(container);
+                    const tagsEl = card.querySelector('.thought-tags');
+                    if (tagsEl && fm) {
+                        let tags = null;
+                        if (lang === 'zh' && Array.isArray(fm.tags_zh)) tags = fm.tags_zh;
+                        else if (lang === 'en' && Array.isArray(fm.tags_en)) tags = fm.tags_en;
+                        else if (Array.isArray(fm.tags)) tags = fm.tags;
+                        if (tags && tags.length) {
+                            tagsEl.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+                        }
+                    }
+
+                    const summaryHtml = extractSummaryFromHtml(container, 1);
+                    if (summaryHtml) contentEl.innerHTML = summaryHtml;
+                } else {
+                    const md = text;
+                    // Title
+                    const titleMatch = md.match(/^#\s+(.+)$/m);
+                    if (titleMatch && link) link.textContent = titleMatch[1].trim();
+
+                    // Date
+                    const dateEl = card.querySelector('.thought-date');
+                    const quoteLineMatch = md.match(/^>\s*(.+)$/m);
+                    if (dateEl && quoteLineMatch) dateEl.textContent = quoteLineMatch[1].trim();
+
+                    // Tags via front matter from markdown
+                    const fm = parseFrontMatter(md);
+                    const tagsEl = card.querySelector('.thought-tags');
+                    let tags = null;
+                    if (lang === 'zh' && Array.isArray(fm.tags_zh)) tags = fm.tags_zh;
+                    else if (lang === 'en' && Array.isArray(fm.tags_en)) tags = fm.tags_en;
+                    else if (Array.isArray(fm.tags)) tags = fm.tags;
+                    if (tagsEl && tags && tags.length) {
+                        tagsEl.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+                    }
+
+                    const summaryHtml = extractSummaryFromMarkdown(md, 1);
+                    if (summaryHtml) contentEl.innerHTML = summaryHtml;
+                }
             })
             .catch(() => { /* keep existing content if fetch fails */ });
     });
@@ -881,61 +952,101 @@ function initPostPage() {
     let candidates = [];
     if (mdParam) {
         const base = mdParam.startsWith('blog/') ? mdParam : `blog/${mdParam}`;
+        // Allow direct .html or .md via mdParam
         candidates = [base];
     } else if (pParam) {
-        candidates = [`blog/${pParam}.${lang}.md`, `blog/${pParam}.md`];
+        candidates = [
+            `blog/${pParam}.${lang}.html`,
+            `blog/${pParam}.html`,
+            `blog/${pParam}.${lang}.md`,
+            `blog/${pParam}.md`
+        ];
     } else {
-        candidates = [`blog/vla.${lang}.md`, 'blog/vla.md'];
+        candidates = [
+            `blog/vla.${lang}.html`,
+            'blog/vla.html',
+            `blog/vla.${lang}.md`,
+            'blog/vla.md'
+        ];
     }
 
     contentEl.innerHTML = `<p data-i18n="thoughts.detail.loading">${(translations[lang] && translations[lang]['thoughts.detail.loading']) || 'Loading...'}</p>`;
     applyTranslations(lang);
 
-    fetchFirstAvailableMarkdown(candidates)
-        .then(md => {
-            const titleMatch = md.match(/^#\s+(.+)$/m);
-            const titleText = titleMatch ? titleMatch[1].trim() : null;
-            const titleEl = document.getElementById('post-title');
-            if (titleEl && titleText) {
-                titleEl.textContent = titleText;
-            }
+    fetchFirstAvailableFile(candidates)
+        .then(({ text, path }) => {
+            const isHtml = /\.html$/i.test(path);
+            if (isHtml) {
+                // Parse HTML and extract title/date, then render the body
+                const temp = document.createElement('div');
+                temp.innerHTML = text;
 
-            // Extract first blockquote first line as update date
-            const quoteLineMatch = md.match(/^>\s*(.+)$/m);
-            const dateEl = document.getElementById('post-date');
-            if (dateEl) {
-                dateEl.textContent = quoteLineMatch ? quoteLineMatch[1].trim() : '';
-            }
-
-            // Remove the first heading from content to avoid duplicate title
-            let bodyMd = md;
-            if (titleMatch) {
-                bodyMd = md.replace(titleMatch[0], '').trimStart();
-            }
-
-            // Remove the first blockquote (contiguous lines starting with ">") from body
-            {
-                const lines = bodyMd.split('\n');
-                const start = lines.findIndex(line => line.trim().startsWith('>'));
-                if (start !== -1) {
-                    let end = start;
-                    while (end < lines.length && lines[end].trim().startsWith('>')) end++;
-                    lines.splice(start, end - start);
-                    bodyMd = lines.join('\n').trimStart();
+                const titleEl = document.getElementById('post-title');
+                const firstH1 = temp.querySelector('h1');
+                if (titleEl && firstH1) {
+                    titleEl.textContent = firstH1.textContent.trim();
+                    firstH1.remove();
                 }
-            }
 
-            // Strip YAML Front-Matter before rendering
-            bodyMd = bodyMd.replace(/^---\n[\s\S]*?\n---\n?/, '').trimStart();
+                const dateEl = document.getElementById('post-date');
+                const firstQuote = temp.querySelector('blockquote');
+                if (dateEl) {
+                    dateEl.textContent = firstQuote ? firstQuote.textContent.trim() : '';
+                    if (firstQuote) firstQuote.remove();
+                }
 
-            if (window.marked && typeof marked.parse === 'function') {
-                contentEl.innerHTML = marked.parse(bodyMd);
+                // Remove embedded front-matter JSON block if present
+                const fmEl = temp.querySelector('script[data-front-matter]');
+                if (fmEl) fmEl.remove();
+
+                contentEl.innerHTML = temp.innerHTML;
             } else {
-                // Fallback: plain text
-                const pre = document.createElement('pre');
-                pre.textContent = bodyMd;
-                contentEl.innerHTML = '';
-                contentEl.appendChild(pre);
+                // Markdown path: keep existing behavior
+                const md = text;
+                const titleMatch = md.match(/^#\s+(.+)$/m);
+                const titleText = titleMatch ? titleMatch[1].trim() : null;
+                const titleEl = document.getElementById('post-title');
+                if (titleEl && titleText) {
+                    titleEl.textContent = titleText;
+                }
+
+                // Extract first blockquote first line as update date
+                const quoteLineMatch = md.match(/^>\s*(.+)$/m);
+                const dateEl = document.getElementById('post-date');
+                if (dateEl) {
+                    dateEl.textContent = quoteLineMatch ? quoteLineMatch[1].trim() : '';
+                }
+
+                // Remove the first heading from content to avoid duplicate title
+                let bodyMd = md;
+                if (titleMatch) {
+                    bodyMd = md.replace(titleMatch[0], '').trimStart();
+                }
+
+                // Remove the first blockquote (contiguous lines starting with ">") from body
+                {
+                    const lines = bodyMd.split('\n');
+                    const start = lines.findIndex(line => line.trim().startsWith('>'));
+                    if (start !== -1) {
+                        let end = start;
+                        while (end < lines.length && lines[end].trim().startsWith('>')) end++;
+                        lines.splice(start, end - start);
+                        bodyMd = lines.join('\n').trimStart();
+                    }
+                }
+
+                // Strip YAML Front-Matter before rendering
+                bodyMd = bodyMd.replace(/^---\n[\s\S]*?\n---\n?/, '').trimStart();
+
+                if (window.marked && typeof marked.parse === 'function') {
+                    contentEl.innerHTML = marked.parse(bodyMd);
+                } else {
+                    // Fallback: plain text
+                    const pre = document.createElement('pre');
+                    pre.textContent = bodyMd;
+                    contentEl.innerHTML = '';
+                    contentEl.appendChild(pre);
+                }
             }
 
             applyTranslations(lang);

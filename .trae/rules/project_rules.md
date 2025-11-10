@@ -4,7 +4,7 @@
 - 目标：构建并维护一个用于个人展示的静态网站，部署于 GitHub Pages（`Legend717.github.io`）。
 - 技术栈：纯 `HTML/CSS/JS`，无后端；默认入口为 `index.html`。
 - 语言：支持中英文切换（默认中文），所有可本地化文本通过 `data-i18n`/`data-i18n-attr` 与字典驱动。
-- 如果对项目做出了改动，请务必在本文件中更新规则！
+- 如果对项目做出了改动，请务必在本文件`project_rules.md`中更新规则！
 
 项目结构
 - 根目录：`index.html`（首页）、`post.html`（详情页）、`styles.css`、`script.js`、`blog/`（Markdown 内容）。
