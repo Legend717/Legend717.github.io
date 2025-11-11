@@ -1,6 +1,6 @@
 ---
-tags_en: [LLM, Multimodal, Cognitive Intelligence]
-tags_zh: [LLM, 多模态, 认知智能]
+tags_zh: [VLA, pi0, flow matching]
+tags_en: [VLA, pi0, flow matching]
 ---
 
 # Notes on the pi series papers and reproduction
